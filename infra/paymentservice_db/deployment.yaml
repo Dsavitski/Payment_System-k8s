@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paymentservice-db
+  namespace: payment-system
+  labels:
+    app: paymentservice-db
+    tier: infra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paymentservice-db
+  template:
+    metadata:
+      labels:
+        app: paymentservice-db
+        tier: infra
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:7.0
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_DATABASE
+              value: paymentdb
+          volumeMounts:
+            - name: data
+              mountPath: /data/db
+          livenessProbe:
+            exec:
+              command: ["mongosh", "--eval", "db.adminCommand('ping').ok", "--quiet"]
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command: ["mongosh", "--eval", "db.adminCommand('ping').ok", "--quiet"]
+            initialDelaySeconds: 15
+            periodSeconds: 5
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: paymentservice-db-pvc

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apigateway-config
+  namespace: payment-system
+data:
+  SERVER_PORT: "8084"
+  SPRING_PROFILES_ACTIVE: "docker"
+  SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: "http://keycloak:8080/realms/payment-system"
+  AUTH_SERVICE_URI: "http://authservice:8085"
+  USER_SERVICE_URI: "http://userservice:8082"
+  ORDER_SERVICE_URI: "http://orderservice:8083"
+  PAYMENT_SERVICE_URI: "http://paymentservice:8086"

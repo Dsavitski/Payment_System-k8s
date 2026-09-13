@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: userservice-redis
+  namespace: payment-system
+spec:
+  selector:
+    app: userservice-redis
+  ports:
+    - port: 6379
+      targetPort: 6379

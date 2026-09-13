@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderservice-db
+  namespace: payment-system
+  labels:
+    app: orderservice-db
+    tier: infra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orderservice-db
+  template:
+    metadata:
+      labels:
+        app: orderservice-db
+        tier: infra
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: orderservice-db-credentials
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+          livenessProbe:
+            exec:
+              command: ["pg_isready", "-U", "order_admin", "-d", "order_db"]
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "order_admin", "-d", "order_db"]
+            initialDelaySeconds: 10
+            periodSeconds: 5
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: orderservice-db-pvc

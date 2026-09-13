@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paymentservice-config
+  namespace: payment-system
+data:
+  PAYMENT_SERVICE_PORT: "8086"
+  SPRING_PROFILES_ACTIVE: "docker"
+  PAYMENT_KEYCLOAK_ISSUER_URI: "http://keycloak:8080/realms/payment-system"
+  PAYMENT_KEYCLOAK_JWK_SET_URI: "http://keycloak:8080/realms/payment-system/protocol/openid-connect/certs"
+  PAYMENT_MONGODB_URI: "mongodb://paymentservice-db:27017/paymentdb"
+  PAYMENT_KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
+  PAYMENT_KAFKA_TOPIC_PAYMENT_CREATED: "payment-created"
+  PAYMENT_RANDOM_API_URL: "https://random-data-api.com/api/v2/numbers"

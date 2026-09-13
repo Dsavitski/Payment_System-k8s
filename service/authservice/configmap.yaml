@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authservice-config
+  namespace: payment-system
+data:
+  SERVER_PORT: "8085"
+  SPRING_PROFILES_ACTIVE: "docker"
+  KEYCLOAK_SERVER_URL: "http://keycloak:8080"
+  KEYCLOAK_REALM: "payment-system"
+  KEYCLOAK_CLIENT_ID: "authentication-service"
+  KEYCLOAK_TOKEN_URL: "http://keycloak:8080/realms/payment-system/protocol/openid-connect/token"
+  SERVICES_USER_SERVICE_URL: "http://userservice:8082"
+  SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: "http://keycloak:8080/realms/payment-system"
